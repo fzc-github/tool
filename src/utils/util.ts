@@ -17,6 +17,7 @@ export function getQueryVariable(variable: string) {
   return null;
 }
 
+// 获取url参数
 export function getParameter(name, url = window.location.search) {
   const regexp = new RegExp(`[?&]${name}=([^&#]*)`, 'i');
   const result = regexp.exec(url);
@@ -24,7 +25,7 @@ export function getParameter(name, url = window.location.search) {
 }
 
 
-
+// json对象里面吧null转为空字符串
 export const null2str = (data) => {
   for (let x in data) {
     if (data[x] === null) { // 如果是null 把直接内容转为 ''
@@ -41,4 +42,38 @@ export const null2str = (data) => {
     }
   }
   return data;
+}
+
+// 校验数据类型
+export const typeOf = function (obj) {
+  return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase()
+}
+
+// 防抖
+export const debounce = (() => {
+  let timer = null
+  return (callback, wait = 800) => {
+    timer && clearTimeout(timer)
+    timer = setTimeout(callback, wait)
+  }
+})()
+
+// 节流
+export const throttle = (() => {
+  let last = 0
+  return (callback, wait = 800) => {
+    let now = +new Date()
+    if (now - last > wait) {
+      callback()
+      last = now
+    }
+  }
+})()
+
+// uuid
+export const uuid = () => {
+  const temp_url = URL.createObjectURL(new Blob())
+  const uuid = temp_url.toString()
+  URL.revokeObjectURL(temp_url) //释放这个url
+  return uuid.substr(uuid.lastIndexOf('/') + 1)
 }
